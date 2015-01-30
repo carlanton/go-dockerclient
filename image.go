@@ -351,31 +351,7 @@ type BuildImageOptions struct {
 //
 // See http://goo.gl/wRsW76 for more details.
 func (c *Client) BuildImage(opts BuildImageOptions) error {
-	if opts.OutputStream == nil {
-		return ErrMissingOutputStream
-	}
-	var headers = headersWithAuth(opts.Auth, opts.AuthConfigs)
-
-	if opts.Remote != "" && opts.Name == "" {
-		opts.Name = opts.Remote
-	}
-	if opts.InputStream != nil || opts.ContextDir != "" {
-		headers["Content-Type"] = "application/tar"
-	} else if opts.Remote == "" {
-		return ErrMissingRepo
-	}
-	if opts.ContextDir != "" {
-		if opts.InputStream != nil {
-			return ErrMultipleContexts
-		}
-		var err error
-		if opts.InputStream, err = createTarStream(opts.ContextDir); err != nil {
-			return err
-		}
-	}
-
-	return c.stream("POST", fmt.Sprintf("/build?%s",
-		queryString(&opts)), true, opts.RawJSONStream, headers, opts.InputStream, opts.OutputStream, nil)
+	return fmt.Errorf("Not implemented")
 }
 
 // TagImageOptions present the set of options to tag an image.
